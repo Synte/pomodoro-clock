@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Pomodoro Clock</title>
+        <link href="style.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div id="options">
+            <div id="duration">
+                <div id="work-duration" class="dur-drop">
+                    <p id="work">Work</p>
+                    <select id="work-minutes"></select>
+                </div>
+                <div id="play-duration" class="dur-drop">
+                    <p id="play">Play</p>
+                    <select id="play-minutes"></select>
+                </div>
+            </div>
+            <div id="repeat">
+                <input type="radio" id="no-repeat" name="repeat-options" value="none" checked>
+                <label for="no-repeat">No Repeat</label>
+                <input type="radio" id="repeat-x" name="repeat-options" value="custom">
+                <label for="repeat-x">Repeat <input type="text" id="custom-repeat-count" minlength="1" value="10"> Times</label>
+                <input type="radio" id="repeat-forever" name="repeat-options" value="forever">
+                <label for="repeat-forever">Repeat Indefinitely</label>
+            </div>
+        </div>
+        <div id="controls">
+            <button type="button" id="start">Start</button>
+            <button type="button" id="pause">Pause</button>
+            <button type="button" id="stop">Stop</button>
+        </div>
+        <div id="display"></div>
+    </body>
+    <script src="script.js"></script>
+</html>
