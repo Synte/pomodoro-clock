@@ -1,10 +1,114 @@
-const selWorkTime = document.getElementById("work-minutes");
-const selPlayTime = document.getElementById("play-minutes");
+// noRepeat, repeatX, repeatForever, customRepeatCount, timerDisplay
+// selWorkTime, selPlayTime
 
-for (let i = 1; i < 61; i++) {
-    selWorkTime.appendChild(new Option(i));
-    selPlayTime.appendChild(new Option(i));
+let timer = 0;
+let timerType = "work";
+let goalTime = 0;
+let cyclesRemaining = 0;
+let timeAfterPause = 0;
+
+let allOptions = [selWorkTime, selPlayTime, noRepeat, repeatForever, repeatX, customRepeatCount];
+
+function getRepeatOption() {
+    switch (true) {
+        case noRepeat.checked: return 1;
+        case repeatForever.checked: return -1;
+        case repeatX.checked:
+            if (/^[\d]+$/.test(customRepeatCount.value) === true) {
+                return parseInt(customRepeatCount.value);
+            } else {
+                //TODO: Show error element
+                return 0;
+            }
+    }
 }
 
-selWorkTime.options[24].selected = true;
-selPlayTime.options[4].selected = true;
+function newTimer() {
+    cyclesRemaining = getRepeatOption();
+    if (cyclesRemaining === 0) return;
+
+    startTimer();
+}
+
+function startTimer() {
+    timeDropdown = (timerType === "work") ? selWorkTime : selPlayTime;
+
+    let startTime = Date.now();
+    goalTime = startTime + (timeDropdown.value * 60000);
+    timer = setInterval(timeRemaining, 100);
+
+    disableControls(allOptions, true);
+    disableControls([startButton], true);
+    disableControls([pauseButton, stopButton], false);
+}
+
+function pauseTimer() {
+    timeAfterPause = goalTime - Date.now();
+    clearInterval(timer);
+    pauseButton.textContent = "Resume";
+    pauseButton.removeEventListener("click", pauseTimer);
+    pauseButton.addEventListener("click", resumeTimer);
+}
+
+function resumeTimer() {
+    goalTime = Date.now() + timeAfterPause;
+    timer = setInterval(timeRemaining, 100);
+    pauseButton.textContent = "Pause";
+    pauseButton.removeEventListener("click", resumeTimer);
+    pauseButton.addEventListener("click", pauseTimer);
+}
+
+function stopTimer() {
+    clearInterval(timer);
+    timerType = "work";
+
+    if (pauseButton.textContent === "Resume") {
+        pauseButton.textContent = "Pause";
+        pauseButton.removeEventListener("click", resumeTimer);
+        pauseButton.addEventListener("click", pauseTimer);
+    }
+    
+    disableControls(allOptions, false);
+    disableControls([startButton], false);
+    disableControls([pauseButton, stopButton], true);
+}
+
+function timerFinish() {
+    if (timerType === "work") {
+        playSound.currentTime = 0;
+        playSound.play();
+
+        timerType = "play";
+        startTimer();
+    } else if (timerType === "play") {
+        workSound.currentTime = 0;
+        workSound.play();
+
+        cyclesRemaining -= 1;
+        if (cyclesRemaining === 0) {
+            stopTimer();
+        } else {
+            timerType = "work";
+            startTimer();
+        }
+    }
+}
+
+
+
+function timeRemaining() {
+    let remaining = goalTime - Date.now();
+    
+    let hours = Math.floor(remaining / mHour);
+    let minutes = Math.floor((remaining % mHour) / mMinute);
+    let seconds = Math.floor(((remaining % mHour) % mMinute) / mSecond);
+
+    if (remaining <= 0) {
+        clearInterval(timer);
+        timerDisplay.textContent = "00:00:00";
+        timerFinish();
+    } else {
+        timerDisplay.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+}
+
