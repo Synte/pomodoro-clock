@@ -1,6 +1,3 @@
-// noRepeat, repeatX, repeatForever, customRepeatCount, timerDisplay
-// selWorkTime, selPlayTime
-
 let timer = 0;
 let timerType = "work";
 let goalTime = 0;
@@ -8,6 +5,8 @@ let cyclesRemaining = 0;
 let timeAfterPause = 0;
 
 let allOptions = [selWorkTime, selPlayTime, noRepeat, repeatForever, repeatX, customRepeatCount];
+
+pauseButton.addEventListener("click", pauseTimer);
 
 function getRepeatOption() {
     switch (true) {
@@ -43,8 +42,8 @@ function startTimer() {
 }
 
 function pauseTimer() {
-    timeAfterPause = goalTime - Date.now();
     clearInterval(timer);
+    timeAfterPause = goalTime - Date.now();
     pauseButton.textContent = "Resume";
     pauseButton.removeEventListener("click", pauseTimer);
     pauseButton.addEventListener("click", resumeTimer);
@@ -61,6 +60,7 @@ function resumeTimer() {
 function stopTimer() {
     clearInterval(timer);
     timerType = "work";
+    timerDisplay.textContent = "00:00:00";
 
     if (pauseButton.textContent === "Resume") {
         pauseButton.textContent = "Pause";
