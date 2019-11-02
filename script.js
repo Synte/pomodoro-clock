@@ -14,9 +14,10 @@ function getRepeatOption() {
         case repeatForever.checked: return -1;
         case repeatX.checked:
             if (/^[\d]+$/.test(customRepeatCount.value) === true) {
+                displayRepeatError(false);
                 return parseInt(customRepeatCount.value);
             } else {
-                //TODO: Show error element
+                displayRepeatError(true);
                 return 0;
             }
     }
