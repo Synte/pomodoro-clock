@@ -1,5 +1,8 @@
+const WORK_TIME = "Work";
+const PLAY_TIME = "Play";
+
 let timer = 0;
-let timerType = "work";
+let timerType = WORK_TIME;
 let goalTime = 0;
 let cyclesRemaining = 0;
 let timeAfterPause = 0;
@@ -31,7 +34,7 @@ function newTimer() {
 }
 
 function startTimer() {
-    timeDropdown = (timerType === "work") ? selWorkTime : selPlayTime;
+    timeDropdown = (timerType === WORK_TIME) ? selWorkTime : selPlayTime;
 
     let startTime = Date.now();
     goalTime = startTime + (timeDropdown.value * 60000);
@@ -48,6 +51,7 @@ function pauseTimer() {
     pauseButton.textContent = "Resume";
     pauseButton.removeEventListener("click", pauseTimer);
     pauseButton.addEventListener("click", resumeTimer);
+    document.title = `[${timerType}] PAUSED`;
 }
 
 function resumeTimer() {
@@ -60,7 +64,7 @@ function resumeTimer() {
 
 function stopTimer() {
     clearInterval(timer);
-    timerType = "work";
+    timerType = WORK_TIME;
     timerDisplay.textContent = "00:00:00";
 
     if (pauseButton.textContent === "Resume") {
@@ -72,16 +76,17 @@ function stopTimer() {
     disableControls(allOptions, false);
     disableControls([startButton], false);
     disableControls([pauseButton, stopButton], true);
+    document.title = "Pomodoro Clock";
 }
 
 function timerFinish() {
-    if (timerType === "work") {
+    if (timerType === WORK_TIME) {
         playSound.currentTime = 0;
         playSound.play();
 
-        timerType = "play";
+        timerType = PLAY_TIME;
         startTimer();
-    } else if (timerType === "play") {
+    } else if (timerType === PLAY_TIME) {
         workSound.currentTime = 0;
         workSound.play();
 
@@ -89,13 +94,11 @@ function timerFinish() {
         if (cyclesRemaining === 0) {
             stopTimer();
         } else {
-            timerType = "work";
+            timerType = WORK_TIME;
             startTimer();
         }
     }
 }
-
-
 
 function timeRemaining() {
     let remaining = goalTime - Date.now();
@@ -110,6 +113,7 @@ function timeRemaining() {
         timerFinish();
     } else {
         timerDisplay.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        document.title = `[${timerType}] ${timerDisplay.textContent}`;
     }
 }
 
