@@ -12,12 +12,13 @@ let allOptions = [selWorkTime, selPlayTime, noRepeat, repeatForever, repeatX, cu
 pauseButton.addEventListener("click", pauseTimer);
 
 function getRepeatOption() {
+    displayRepeatError(false);
+
     switch (true) {
         case noRepeat.checked: return 1;
         case repeatForever.checked: return -1;
         case repeatX.checked:
             if (/^[\d]+$/.test(customRepeatCount.value) === true) {
-                displayRepeatError(false);
                 return parseInt(customRepeatCount.value);
             } else {
                 displayRepeatError(true);
