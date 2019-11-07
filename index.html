@@ -4,6 +4,7 @@
     <head>
         <title>Pomodoro Clock</title>
         <link href="style.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
     </head>
     <body>
         <div id="options">
@@ -18,12 +19,18 @@
                 </div>
             </div>
             <div id="repeat">
-                <input type="radio" id="no-repeat" name="repeat-options" value="none" checked>
-                <label for="no-repeat">No Repeat</label>
-                <input type="radio" id="repeat-x" name="repeat-options" value="custom">
-                <label for="repeat-x">Repeat <input type="text" id="custom-repeat-count" minlength="1" size="4" value="10"> Times</label>
-                <input type="radio" id="repeat-forever" name="repeat-options" value="forever">
-                <label for="repeat-forever">Repeat Indefinitely</label>
+                <div id="repeat-option-none" class="repeat-option-set">
+                    <input type="radio" id="no-repeat" name="repeat-options" value="none" checked>
+                    <label for="no-repeat">Don't repeat</label>
+                </div>
+                <div id="repeat-option-custom" class="repeat-option-set">
+                    <input type="radio" id="repeat-x" name="repeat-options" value="custom">
+                    <label for="repeat-x">Repeat <input type="text" id="custom-repeat-count" minlength="1" value="10"> times</label>
+                </div>
+                <div id="repeat-option-forever" class="repeat-option-set">
+                    <input type="radio" id="repeat-forever" name="repeat-options" value="forever">
+                    <label for="repeat-forever">Repeat indefinitely</label>
+                </div>
             </div>
         </div>
         <div id="controls">
@@ -32,6 +39,7 @@
             <button type="button" id="stop" onclick="stopTimer()">Stop</button>
         </div>
         <div id="display">
+            <p id="timer-message"></p>
             <p id="timer-display">00:00:00</p>
         </div>
     </body>
@@ -41,4 +49,5 @@
     <script src="scripts/helpers.js"></script>
     <script src="scripts/onload.js"></script>
     <script src="scripts/timer.js"></script>
+    <script src="scripts/resize.js"></script>
 </html>

@@ -13,6 +13,7 @@ selPlayTime.options[4].selected = true;
 
 /* Create variables for other DOM elements */
 const timerDisplay = document.getElementById("timer-display");
+const timerMessage = document.getElementById("timer-message");
 
 const noRepeat = document.getElementById("no-repeat");
 const repeatX = document.getElementById("repeat-x");

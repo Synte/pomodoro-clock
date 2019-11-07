@@ -36,6 +36,7 @@ function newTimer() {
 
 function startTimer() {
     timeDropdown = (timerType === WORK_TIME) ? selWorkTime : selPlayTime;
+    timerMessage.textContent = `Keep ${timerType.toLowerCase()}ing!`
 
     let startTime = Date.now();
     goalTime = startTime + (timeDropdown.value * 60000);
@@ -65,6 +66,7 @@ function resumeTimer() {
 
 function stopTimer() {
     clearInterval(timer);
+    timerMessage.textContent = "";
     timerType = WORK_TIME;
     timerDisplay.textContent = "00:00:00";
 
@@ -110,6 +112,7 @@ function timeRemaining() {
 
     if (remaining <= 0) {
         clearInterval(timer);
+        timerMessage.textContent = "";
         timerDisplay.textContent = "00:00:00";
         timerFinish();
     } else {
